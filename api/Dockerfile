@@ -10,4 +10,4 @@ COPY . ./
 
 EXPOSE 8000
 
-CMD ["./init.sh"]
+CMD ["sh", "init.sh"]
