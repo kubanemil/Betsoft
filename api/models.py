@@ -1,18 +1,21 @@
 import datetime
 
 from pydantic import BaseModel, field_validator
-from sqlalchemy.orm import Mapped, declarative_base, mapped_column
-
-Base = declarative_base()
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 
-class Bet(Base):
-    __tablename__ = "bet"
-
+class BaseTableModel(DeclarativeBase):
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.utcnow
     )
+
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
+
+
+class Bet(BaseTableModel):
     event_id: Mapped[int]
     amount: Mapped[float]
     has_won: Mapped[bool | None]

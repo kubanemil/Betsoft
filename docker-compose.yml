@@ -1,10 +1,8 @@
-version: "3.8"
-
 services:
   api:  
     build: 
-      context: /api/.
-      dockerfile: ./Dockerfile 
+      context: ./api/
+      dockerfile: ./Dockerfile
     env_file: ./envs/api.env
     ports:
       - "8000:8000"
@@ -24,5 +22,5 @@ services:
       interval: 30s
       timeout: 60s
       retries: 5
-      start_period: 80s
+      start_period: 40s
     restart: on-failure

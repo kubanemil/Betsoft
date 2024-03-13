@@ -1,22 +1,14 @@
-import os
 from logging.config import fileConfig
 
 from alembic import context
-from models import Base
+from db import DATABASE_URL
+from models import BaseTableModel
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
-DATABASE_URL = "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
-    os.environ["DB_USER"],
-    os.environ["DB_PASSWORD"],
-    os.environ["DB_HOST"],
-    os.environ["DB_PORT"],
-    os.environ["DB_NAME"],
-)
 
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
@@ -25,7 +17,7 @@ config.set_main_option("sqlalchemy.url", DATABASE_URL)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata
+target_metadata = BaseTableModel.metadata
 
 
 def run_migrations_offline() -> None:

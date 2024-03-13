@@ -1,3 +1,4 @@
+import uvicorn
 from db import session_dep
 from fastapi import FastAPI, HTTPException
 from models import Bet, BetCreate, BetRead
@@ -39,3 +40,20 @@ async def update_event(event_id: int, has_won: bool, session: session_dep):
         bet.has_won = has_won
     await session.commit()
     return bets
+
+
+if __name__ == "__main__":
+    from alembic import command
+    from alembic.config import Config
+
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        log_level="info",
+        log_config=None,
+        reload=True,
+    )
